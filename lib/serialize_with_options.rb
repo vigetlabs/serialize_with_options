@@ -3,14 +3,14 @@ module SerializeWithOptions
     config = Config.new
     config.instance_eval(&block)
 
-    write_inheritable_attribute(:serialization_options, config.options)
+    @serialization_options = config.options
 
     extend ClassMethods
     include InstanceMethods
   end
 
   def serialization_options
-    read_inheritable_attribute(:serialization_options) || {}
+    @serialization_options || {}
   end
 
   class Config
