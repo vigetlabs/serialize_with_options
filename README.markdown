@@ -40,7 +40,19 @@ With these directives in place, we can call `@post.to_xml` (or `@post.to_json`) 
 
     @post.to_xml(:include => { :user => { :methods => :post_count, :except => :email }, :comments => { } })
 
-All serialization options are enclosed in a `serialize_with_options` block. There are three options, lifted directly from ActiveRecord's `to_xml` API: `methods` are the methods to add to the default attributes, `includes` are the associated models, and `except` are the methods/attributes to leave out.
+In our controller, we can just say:
+
+    def show
+      @post = Post.find(params[:id])
+
+      respond_to do |format|
+        format.html
+        format.xml { render :xml => @post }
+        format.json { render :json => @post }
+      end
+    end
+
+All serialization options are enclosed in a `serialize_with_options` block. There are three options, lifted directly from ActiveRecord's [serialization API][ser]: `methods` are the methods to add to the default attributes, `includes` are the associated models, and `except` are the methods/attributes to leave out.
 
 If an included model has its own `serialize_with_options` block, its `methods` and `except` will be respected. However, the included model's `includes` directive will be ignored (only one level of nesting is supported).
 
@@ -56,4 +68,5 @@ From your app root:
 
 Copyright (c) 2009 David Eisinger ([Viget Labs][vgt]), released under the MIT license.
 
+[ser]: http://api.rubyonrails.org/classes/ActiveRecord/Serialization.html
 [vgt]: http://www.viget.com/
