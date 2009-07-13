@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
     includes  :posts
   end
 
+  serialize_with_options(:with_comments) do
+    includes  :posts => { :include => :comments }
+  end
+
   def post_count
     self.posts.count
   end
@@ -98,6 +102,11 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
 
       assert_equal @user.email,       post_hash["user"]["email"]
       assert_equal @user.post_count,  post_hash["user"]["post_count"]
+    end
+
+    should "accept a hash for includes directive" do
+      user_hash = Hash.from_xml(@user.to_xml(:with_comments))["user"]
+      assert_equal @comment.content, user_hash["posts"].first["comments"].first["content"]
     end
 
     context "with a secondary configuration" do

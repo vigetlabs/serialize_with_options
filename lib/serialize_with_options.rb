@@ -20,7 +20,9 @@ module SerializeWithOptions
     @options[set] ||= returning serialization_configuration(set) do |opts|
       includes = opts.delete(:includes)
 
-      if includes
+      if includes && includes.first.is_a?(Hash)
+        opts[:include] = includes.first
+      elsif includes
         opts[:include] = includes.inject({}) do |hash, class_name|
           klass = class_name.to_s.singularize.capitalize.constantize
           hash[class_name] = klass.serialization_configuration(set)
@@ -59,10 +61,10 @@ module SerializeWithOptions
 
     def parse_serialization_options(opts)
       if opts.is_a? Symbol
-        set = opts
+        set  = opts
         opts = {}
       else
-        set = :default
+        set  = :default
       end
 
       [set, opts]
