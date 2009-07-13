@@ -9,6 +9,11 @@ class User < ActiveRecord::Base
     except    :email
   end
 
+  serialize_with_options(:with_email) do
+    methods   :post_count
+    includes  :posts
+  end
+
   def post_count
     self.posts.count
   end
@@ -19,6 +24,10 @@ class Post < ActiveRecord::Base
   belongs_to :user
 
   serialize_with_options do
+    includes :user, :comments
+  end
+
+  serialize_with_options(:with_email) do
     includes :user, :comments
   end
 end
@@ -76,6 +85,18 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
       end
 
       should_serialize_with_options
+    end
+
+    context "with a secondary configuration" do
+      should "use it" do
+        user_hash = Hash.from_xml(@user.to_xml(:with_email))["user"]
+        assert_equal @user.email, user_hash["email"]
+      end
+
+      should "pass it through to included models" do
+        post_hash = Hash.from_xml(@post.to_xml(:with_email))["post"]
+        assert_equal @user.email, post_hash["user"]["email"]
+      end
     end
 
     context "being converted to JSON" do
