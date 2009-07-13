@@ -18,6 +18,11 @@ Here is a simple example of SerializeWithOptions in action:
         except    :email
       end
 
+      serialize_with_options(:with_email) do
+        methods   :post_count
+        includes  :posts
+      end
+
       def post_count
         self.posts.count
       end
@@ -28,6 +33,7 @@ Here is a simple example of SerializeWithOptions in action:
       belongs_to :user
 
       serialize_with_options do
+        only :title
         includes :user, :comments
       end
     end
@@ -52,9 +58,11 @@ In our controller, we can just say:
       end
     end
 
-All serialization options are enclosed in a `serialize_with_options` block. There are three options, lifted directly from ActiveRecord's [serialization API][ser]: `methods` are the methods to add to the default attributes, `includes` are the associated models, and `except` are the methods/attributes to leave out.
+All serialization options are enclosed in a `serialize_with_options` block. There are four options, lifted directly from ActiveRecord's [serialization API][ser]: `methods` are the methods to add to the default attributes, `only` are the attributes to include (if you want to exclude all others), `except` are the methods/attributes to leave out, and `includes` are the associated models.
 
-If an included model has its own `serialize_with_options` block, its `methods` and `except` will be respected. However, the included model's `includes` directive will be ignored (only one level of nesting is supported).
+If an included model has its own `serialize_with_options` block, its `methods`, `only`, and `except` will be respected. However, the included model's `includes` directive will be ignored (only one level of nesting is supported).
+
+The `serialize_with_options` class method takes an optional argument for naming a configuration set (see the User model above). This is useful if you need to multiple serialization configuration sets. You can access these secondary configuration sets by passing the set name to the serialization method (e.g., `@post.to_xml(:with_email)`).
 
 
 Installation
