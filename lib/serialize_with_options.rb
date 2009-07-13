@@ -20,14 +20,16 @@ module SerializeWithOptions
     @options[set] ||= returning serialization_configuration(set) do |opts|
       includes = opts.delete(:includes)
 
-      if includes && includes.first.is_a?(Hash)
-        opts[:include] = includes.first
-      elsif includes
+      if includes
         opts[:include] = includes.inject({}) do |hash, class_name|
-          klass = class_name.to_s.singularize.capitalize.constantize
-          hash[class_name] = klass.serialization_configuration(set)
-          hash[class_name][:include] = nil if hash[class_name].delete(:includes)
-          hash
+          if class_name.is_a? Hash
+            hash.merge(class_name)
+          else
+            klass = class_name.to_s.singularize.capitalize.constantize
+            hash[class_name] = klass.serialization_configuration(set)
+            hash[class_name][:include] = nil if hash[class_name].delete(:includes)
+            hash
+          end
         end
       end
     end
