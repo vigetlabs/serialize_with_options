@@ -13,7 +13,7 @@ module SerializeWithOptions
       @configuration[set] || @configuration[:default]
     end
 
-    conf.try(:dup) || {}
+    conf.try(:dup) || { :methods => nil, :only => nil, :except => nil }
   end
 
   def serialization_options(set)
