@@ -1,5 +1,32 @@
 require 'test_helper'
 
+class User < ActiveRecord::Base
+  has_many :posts
+
+  serialize_with_options do
+    methods   :post_count
+    includes  :posts
+    except    :email
+  end
+
+  def post_count
+    self.posts.count
+  end
+end
+
+class Post < ActiveRecord::Base
+  has_many :comments
+  belongs_to :user
+
+  serialize_with_options do
+    includes :user, :comments
+  end
+end
+
+class Comment < ActiveRecord::Base
+  belongs_to :post
+end
+
 class SerializeWithOptionsTest < Test::Unit::TestCase
   def self.should_serialize_with_options
     should "include active_record attributes" do

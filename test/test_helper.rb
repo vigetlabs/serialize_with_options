@@ -32,30 +32,3 @@ ActiveRecord::Base.connection.create_table :comments do |t|
   t.text :content
   t.integer :post_id
 end
-
-class User < ActiveRecord::Base
-  has_many :posts
-
-  serialize_with_options do
-    methods   :post_count
-    includes  :posts
-    except    :email
-  end
-
-  def post_count
-    self.posts.count
-  end
-end
-
-class Post < ActiveRecord::Base
-  has_many :comments
-  belongs_to :user
-
-  serialize_with_options do
-    includes :user, :comments
-  end
-end
-
-class Comment < ActiveRecord::Base
-  belongs_to :post
-end
