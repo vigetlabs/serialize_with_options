@@ -35,7 +35,7 @@ module SerializeWithOptions
     undef_method :methods
 
     def initialize
-      @data = {}
+      @data = { :methods => nil, :only => nil, :except => nil }
     end
 
     def method_missing(method, *args)
