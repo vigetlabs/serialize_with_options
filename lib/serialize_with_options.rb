@@ -47,12 +47,12 @@ module SerializeWithOptions
   module InstanceMethods
     def to_xml(opts = {})
       set, opts = parse_serialization_options(opts)
-      super(self.class.serialization_options(set).merge(opts))
+      super(self.class.serialization_options(set).deep_merge(opts))
     end
 
     def to_json(opts = {})
       set, opts = parse_serialization_options(opts)
-      super(self.class.serialization_options(set).merge(opts))
+      super(self.class.serialization_options(set).deep_merge(opts))
     end
 
     private

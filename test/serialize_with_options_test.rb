@@ -92,6 +92,14 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
       should_serialize_with_options
     end
 
+    should "accept additional properties w/o overwriting defaults" do
+      xml = @post.to_xml(:include => { :user => { :except => nil } })
+      post_hash = Hash.from_xml(xml)["post"]
+
+      assert_equal @user.email,       post_hash["user"]["email"]
+      assert_equal @user.post_count,  post_hash["user"]["post_count"]
+    end
+
     context "with a secondary configuration" do
       should "use it" do
         user_hash = Hash.from_xml(@user.to_xml(:with_email))["user"]
