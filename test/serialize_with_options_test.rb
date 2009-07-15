@@ -2,7 +2,8 @@ require 'test_helper'
 
 class User < ActiveRecord::Base
   has_many :posts
-
+  has_many :check_ins
+  
   serialize_with_options do
     methods   :post_count
     includes  :posts
@@ -16,6 +17,10 @@ class User < ActiveRecord::Base
 
   serialize_with_options(:with_comments) do
     includes  :posts => { :include => :comments }
+  end
+  
+  serialize_with_options(:with_check_ins) do
+    includes :check_ins
   end
 
   def post_count
@@ -39,6 +44,17 @@ end
 
 class Comment < ActiveRecord::Base
   belongs_to :post
+end
+
+class CheckIn < ActiveRecord::Base
+  belongs_to :user
+  
+  serialize_with_options do
+    only :code_name
+    includes :user
+    dasherize false
+    skip_types true
+  end
 end
 
 class SerializeWithOptionsTest < Test::Unit::TestCase
@@ -128,6 +144,18 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
       end
 
       should_serialize_with_options
+    end
+    
+    context "serializing associated models" do
+      setup do
+        @user = User.create(:name => "John User", :email => "john@example.com")
+        @check_in = @user.check_ins.create(:code_name => "Hello World")
+      end
+      
+      should "find associations with multi-word names" do
+        user_hash = JSON.parse(@user.to_json(:with_check_ins))
+        assert_equal @check_in.code_name, user_hash['check_ins'].first['code_name']
+      end
     end
   end
 end

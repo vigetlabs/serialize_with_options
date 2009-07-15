@@ -25,7 +25,7 @@ module SerializeWithOptions
           if class_name.is_a? Hash
             hash.merge(class_name)
           else
-            klass = class_name.to_s.singularize.capitalize.constantize
+            klass = class_name.to_s.classify.constantize
             hash[class_name] = klass.serialization_configuration(set)
             hash[class_name][:include] = nil if hash[class_name].delete(:includes)
             hash
