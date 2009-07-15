@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
   
   serialize_with_options(:with_check_ins) do
     includes :check_ins
+    dasherize false
+    skip_types true
   end
 
   def post_count
@@ -52,8 +54,6 @@ class CheckIn < ActiveRecord::Base
   serialize_with_options do
     only :code_name
     includes :user
-    dasherize false
-    skip_types true
   end
 end
 
@@ -156,6 +156,11 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
         user_hash = JSON.parse(@user.to_json(:with_check_ins))
         assert_equal @check_in.code_name, user_hash['check_ins'].first['code_name']
       end
-    end
+      
+      should "respect xml formatting options" do
+        assert !@user.to_xml(:with_check_ins).include?('check-ins')
+        assert !@user.to_xml(:with_check_ins).include?('type=')
+      end
+    end    
   end
 end

@@ -37,13 +37,14 @@ module SerializeWithOptions
 
   class Config
     undef_method :methods
-
+    Instructions = [:skip_instruct, :dasherize, :skip_types, :root_in_json].freeze
+    
     def initialize
       @data = { :methods => nil, :only => nil, :except => nil }
     end
 
     def method_missing(method, *args)
-      @data[method] = args
+      @data[method] = Instructions.include?(method) ? args.first : args 
       @data
     end
   end
