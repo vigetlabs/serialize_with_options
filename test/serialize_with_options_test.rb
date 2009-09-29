@@ -2,6 +2,7 @@ require 'test_helper'
 
 class User < ActiveRecord::Base
   has_many :posts
+  has_many :blog_posts
   has_many :check_ins
   
   serialize_with_options do
@@ -44,6 +45,12 @@ class Post < ActiveRecord::Base
   end
 end
 
+class BlogPost < Post
+  serialize_with_options(:with_email) do
+    includes :user
+  end
+end
+
 class Comment < ActiveRecord::Base
   belongs_to :post
 end
@@ -78,7 +85,11 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
     should "include specified associations" do
       assert_equal @post.title, @user_hash["posts"].first["title"]
     end
-
+    
+    should "be identical in inherited model" do
+      assert_equal @post_hash["title"], @blog_post_hash["title"]
+    end
+    
     should "include specified methods on associations" do
       assert_equal @user.post_count, @post_hash["user"]["post_count"]
     end
@@ -94,12 +105,17 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
     should "include association without serialization options properly" do
       assert_equal @comment.content, @post_hash["comments"].first["content"]
     end
+    
+    should "override sets on inherited models" do
+      assert_equal nil, @blog_post_hash["comments"].first
+    end
   end
 
   context "An instance of a class with serialization options" do
     setup do
       @user = User.create(:name => "John User", :email => "john@example.com")
       @post = @user.posts.create(:title => "Hello World!", :content => "Welcome to my blog.")
+      @blog_post = @user.blog_posts.create(:title => "Hello World!", :content => "Welcome to my blog.")
       @comment = @post.comments.create(:content => "Great blog!")
     end
 
@@ -107,11 +123,13 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
       setup do
         @user_hash = Hash.from_xml(@user.to_xml)["user"]
         @post_hash = Hash.from_xml(@post.to_xml)["post"]
+        @blog_post_hash = Hash.from_xml(@blog_post.to_xml)["blog_post"]
       end
 
       should_serialize_with_options
     end
-
+    
+    
     should "accept additional properties w/o overwriting defaults" do
       xml = @post.to_xml(:include => { :user => { :except => nil } })
       post_hash = Hash.from_xml(xml)["post"]
@@ -141,6 +159,7 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
       setup do
         @user_hash = JSON.parse(@user.to_json)
         @post_hash = JSON.parse(@post.to_json)
+        @blog_post_hash = JSON.parse(@blog_post.to_json)
       end
 
       should_serialize_with_options

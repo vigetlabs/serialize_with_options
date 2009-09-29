@@ -27,6 +27,7 @@ ActiveRecord::Base.connection.create_table :posts do |t|
   t.string :title
   t.text :content
   t.integer :user_id
+  t.string :type
 end
 
 ActiveRecord::Base.connection.create_table :comments do |t|

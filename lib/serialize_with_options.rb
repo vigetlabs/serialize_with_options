@@ -1,23 +1,29 @@
 module SerializeWithOptions
+  
   def serialize_with_options(set = :default, &block)
-    @configuration ||= {}
-    @options       ||= {}
-
-    @configuration[set] = Config.new.instance_eval(&block)
-
+    configuration = read_inheritable_attribute(:configuration) || {}
+    options       = read_inheritable_attribute(:options) || {}
+    
+    configuration[set] = Config.new.instance_eval(&block)
+    
+    write_inheritable_attribute :configuration, configuration
+    write_inheritable_attribute :options, options
+    
     include InstanceMethods
   end
 
   def serialization_configuration(set)
-    conf = if @configuration
-      @configuration[set] || @configuration[:default]
+    configuration = read_inheritable_attribute(:configuration)
+    conf = if configuration
+      configuration[set] || configuration[:default]
     end
 
     conf.try(:dup) || { :methods => nil, :only => nil, :except => nil }
   end
 
   def serialization_options(set)
-    @options[set] ||= returning serialization_configuration(set) do |opts|
+    options = read_inheritable_attribute(:options)
+    options[set] ||= returning serialization_configuration(set) do |opts|
       includes = opts.delete(:includes)
 
       if includes
@@ -33,6 +39,8 @@ module SerializeWithOptions
         end
       end
     end
+    write_inheritable_attribute :options, options
+    options[set]
   end
 
   class Config
