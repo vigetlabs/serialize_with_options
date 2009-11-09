@@ -10,7 +10,7 @@ require File.dirname(__FILE__) + "/../init"
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
-  :dbfile => 'test.db'
+  :database => 'test.db'
 )
 
 [:users, :posts, :comments, :check_ins, :reviews].each do |table|
