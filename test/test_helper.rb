@@ -13,10 +13,9 @@ ActiveRecord::Base.establish_connection(
   :dbfile => 'test.db'
 )
 
-ActiveRecord::Base.connection.drop_table :users rescue nil
-ActiveRecord::Base.connection.drop_table :posts rescue nil
-ActiveRecord::Base.connection.drop_table :comments rescue nil
-ActiveRecord::Base.connection.drop_table :check_ins rescue nil
+[:users, :posts, :comments, :check_ins, :reviews].each do |table|
+  ActiveRecord::Base.connection.drop_table table rescue nil
+end
 
 ActiveRecord::Base.connection.create_table :users do |t|
   t.string :name
@@ -38,5 +37,11 @@ end
 ActiveRecord::Base.connection.create_table :check_ins do |t|
   t.integer :user_id
   t.string :code_name
+end
+
+ActiveRecord::Base.connection.create_table :reviews do |t|
+  t.string :content
+  t.integer :reviewable_id
+  t.string :reviewable_type
 end
 

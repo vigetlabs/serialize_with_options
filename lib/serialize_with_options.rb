@@ -1,14 +1,14 @@
 module SerializeWithOptions
-  
+
   def serialize_with_options(set = :default, &block)
     configuration = read_inheritable_attribute(:configuration) || {}
     options       = read_inheritable_attribute(:options) || {}
-    
+
     configuration[set] = Config.new.instance_eval(&block)
-    
+
     write_inheritable_attribute :configuration, configuration
     write_inheritable_attribute :options, options
-    
+
     include InstanceMethods
   end
 
@@ -31,10 +31,14 @@ module SerializeWithOptions
           if class_name.is_a? Hash
             hash.merge(class_name)
           else
-            klass = class_name.to_s.classify.constantize
-            hash[class_name] = klass.serialization_configuration(set)
-            hash[class_name][:include] = nil if hash[class_name].delete(:includes)
-            hash
+            begin
+              klass = class_name.to_s.classify.constantize
+              hash[class_name] = klass.serialization_configuration(set)
+              hash[class_name][:include] = nil if hash[class_name].delete(:includes)
+              hash
+            rescue NameError
+              hash.merge(class_name => { :include => nil })
+            end
           end
         end
       end
@@ -46,13 +50,13 @@ module SerializeWithOptions
   class Config
     undef_method :methods
     Instructions = [:skip_instruct, :dasherize, :skip_types, :root_in_json].freeze
-    
+
     def initialize
       @data = { :methods => nil, :only => nil, :except => nil }
     end
 
     def method_missing(method, *args)
-      @data[method] = Instructions.include?(method) ? args.first : args 
+      @data[method] = Instructions.include?(method) ? args.first : args
       @data
     end
   end
