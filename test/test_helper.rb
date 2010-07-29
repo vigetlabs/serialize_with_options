@@ -8,10 +8,7 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'serialize_with_options'
 require File.dirname(__FILE__) + "/../init"
 
-ActiveRecord::Base.establish_connection(
-  :adapter => 'sqlite3',
-  :database => 'test.db'
-)
+ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 
 [:users, :posts, :comments, :check_ins, :reviews].each do |table|
   ActiveRecord::Base.connection.drop_table table rescue nil
