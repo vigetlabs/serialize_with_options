@@ -74,7 +74,7 @@ From your app root:
 
 * * *
 
-Copyright (c) 2009 David Eisinger ([Viget Labs][vgt]), released under the MIT license.
+Copyright (c) 2009-2010 David Eisinger ([Viget Labs][vgt]), released under the MIT license.
 
 [ser]: http://api.rubyonrails.org/classes/ActiveRecord/Serialization.html
 [vgt]: http://www.viget.com/
