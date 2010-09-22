@@ -23,7 +23,7 @@ module SerializeWithOptions
 
   def serialization_options(set)
     options = read_inheritable_attribute(:options)
-    options[set] ||= returning serialization_configuration(set) do |opts|
+    options[set] ||= serialization_configuration(set).tap do |opts|
       includes = opts.delete(:includes)
 
       if includes
