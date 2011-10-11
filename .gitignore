@@ -1,1 +1,5 @@
 test.db
+*.gem
+.bundle
+Gemfile.lock
+pkg/*

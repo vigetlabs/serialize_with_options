@@ -1,12 +1,13 @@
+$:.unshift(File.dirname(__FILE__) + '/..')
+$:.unshift(File.dirname(__FILE__) + '/../lib')
+
 require 'rubygems'
 require 'active_record'
 require 'test/unit'
 require 'shoulda'
 require 'json'
-
-$:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'serialize_with_options'
-require File.dirname(__FILE__) + "/../init"
+require 'init'
 
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 
