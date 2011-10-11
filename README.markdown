@@ -70,11 +70,11 @@ Installation
 
 From your app root:
 
-    script/plugin install git://github.com/vigetlabs/serialize_with_options.git
+    rails plugin install git://github.com/vigetlabs/serialize_with_options.git
 
 * * *
 
-Copyright (c) 2009-2010 David Eisinger ([Viget Labs][vgt]), released under the MIT license.
+Copyright (c) 2009-2011 David Eisinger ([Viget Labs][vgt]), released under the MIT license.
 
 [ser]: http://api.rubyonrails.org/classes/ActiveRecord/Serialization.html
 [vgt]: http://www.viget.com/
