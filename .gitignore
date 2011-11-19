@@ -3,3 +3,4 @@ test.db
 .bundle
 Gemfile.lock
 pkg/*
+.rvmrc
