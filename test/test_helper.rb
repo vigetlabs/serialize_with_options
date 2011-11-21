@@ -7,7 +7,7 @@ require 'test/unit'
 require 'shoulda'
 require 'json'
 require 'serialize_with_options'
-require 'init'
+ActiveRecord::Base.extend SerializeWithOptions
 
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 

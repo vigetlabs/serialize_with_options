@@ -68,9 +68,11 @@ The `serialize_with_options` class method takes an optional argument for naming 
 Installation
 ------------
 
-From your app root:
+Simply add "`serialize_with_options`" to your Gemfile:
 
-    rails plugin install git://github.com/vigetlabs/serialize_with_options.git
+    gem "serialize_with_options"
+
+And run "`bundle install`"
 
 * * *
 

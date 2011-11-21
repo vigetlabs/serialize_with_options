@@ -1,3 +1,5 @@
+require 'serialize_with_options/railtie' if defined?(Rails)
+
 module SerializeWithOptions
   def self.extended(base)
     base.class_attribute :serialization_conf
