@@ -72,9 +72,9 @@ module SerializeWithOptions
       super(self.class.serialization_options(set).deep_merge(opts))
     end
 
-    def to_json(opts = {})
+    def as_json(opts = nil)
       set, opts = parse_serialization_options(opts)
-      super(self.class.serialization_options(set).deep_merge(opts))
+      super(self.class.serialization_options(set).deep_merge(opts || {}))
     end
 
     private
