@@ -194,6 +194,20 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
 
       should_serialize_with_options
     end
+    
+    context 'passing options to the serializer' do
+      setup do
+        @user_hash = @user.as_json(:with_email, :root => 'custom_root')['custom_root']
+      end
+      
+      should "include active_record attributes" do
+        assert_equal @user.name, @user_hash["name"]
+      end
+
+      should "exclude specified attributes" do
+        assert_equal @user.email, @user_hash["email"]
+      end
+    end
 
     context "serializing associated models" do
       setup do

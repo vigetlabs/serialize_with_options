@@ -67,25 +67,21 @@ module SerializeWithOptions
   end
 
   module InstanceMethods
-    def to_xml(opts = {})
-      set, opts = parse_serialization_options(opts)
+    def to_xml(*args)
+      set, opts = parse_serialization_options(args)
       super(self.class.serialization_options(set).deep_merge(opts))
     end
 
-    def as_json(opts = nil)
-      set, opts = parse_serialization_options(opts)
-      super(self.class.serialization_options(set).deep_merge(opts || {}))
+    def as_json(*args)
+      set, opts = parse_serialization_options(args)
+      super(self.class.serialization_options(set).deep_merge(opts))
     end
 
     private
 
-    def parse_serialization_options(opts)
-      if opts.is_a? Symbol
-        set  = opts
-        opts = {}
-      else
-        set  = :default
-      end
+    def parse_serialization_options(args)
+      opts = args.extract_options!
+      set = args.shift || :default
 
       [set, opts]
     end
