@@ -3,7 +3,7 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'rubygems'
 require 'active_record'
-require 'test/unit'
+require 'minitest/autorun'
 require 'shoulda'
 require 'json'
 require 'serialize_with_options'

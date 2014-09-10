@@ -67,14 +67,11 @@ module SerializeWithOptions
   end
 
   module InstanceMethods
-    def to_xml(*args)
-      set, opts = parse_serialization_options(args)
-      super(self.class.serialization_options(set).deep_merge(opts))
-    end
-
-    def as_json(*args)
-      set, opts = parse_serialization_options(args)
-      super(self.class.serialization_options(set).deep_merge(opts))
+    %w(to_xml to_json as_json).each do |method_name|
+      define_method method_name do |*args|
+        set, opts = parse_serialization_options(args)
+        super self.class.serialization_options(set).deep_merge(opts)
+      end
     end
 
     private

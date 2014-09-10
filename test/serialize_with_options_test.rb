@@ -78,7 +78,7 @@ class Review < ActiveRecord::Base
   end
 end
 
-class SerializeWithOptionsTest < Test::Unit::TestCase
+class SerializeWithOptionsTest < Minitest::Test
   def self.should_serialize_with_options
     should "include active_record attributes" do
       assert_equal @user.name, @user_hash["name"]
@@ -181,15 +181,15 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
 
       should "serialize the associated object properly" do
         review_hash = Hash.from_xml(@review.to_xml)
-        assert_equal @user.email, review_hash["review"]["reviewable"]["email"]
+        assert_equal @user.name, review_hash["review"]["reviewable"]["name"]
       end
     end
 
     context "being converted to JSON" do
       setup do
-        @user_hash = JSON.parse(@user.to_json)["user"]
-        @post_hash = JSON.parse(@post.to_json)["post"]
-        @blog_post_hash = JSON.parse(@blog_post.to_json)["blog_post"]
+        @user_hash = JSON.parse(@user.to_json)
+        @post_hash = JSON.parse(@post.to_json)
+        @blog_post_hash = JSON.parse(@blog_post.to_json)
       end
 
       should_serialize_with_options
@@ -216,7 +216,7 @@ class SerializeWithOptionsTest < Test::Unit::TestCase
       end
 
       should "find associations with multi-word names" do
-        user_hash = JSON.parse(@user.to_json(:with_check_ins))["user"]
+        user_hash = JSON.parse(@user.to_json(:with_check_ins))
         assert_equal @check_in.code_name, user_hash['check_ins'].first['code_name']
       end
 
