@@ -78,7 +78,7 @@ And run "`bundle install`"
 
 * * *
 
-Copyright (c) 2009-2011 David Eisinger ([Viget Labs][vgt]), released under the MIT license.
+Copyright (c) 2009-2014 David Eisinger & Zachary Porter ([Viget Labs][vgt]), released under the MIT license.
 
 [ser]: http://api.rubyonrails.org/classes/ActiveRecord/Serialization.html
 [vgt]: http://www.viget.com/
