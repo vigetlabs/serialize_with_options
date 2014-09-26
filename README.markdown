@@ -1,7 +1,7 @@
 SerializeWithOptions
 ====================
 
-[![Code Climate](https://codeclimate.com/github/vigetlabs/serialize_with_options.png)](https://codeclimate.com/github/vigetlabs/serialize_with_options)
+[![Code Climate](https://codeclimate.com/github/vigetlabs/serialize_with_options.png)](https://codeclimate.com/github/vigetlabs/serialize_with_options) [![Build Status](https://travis-ci.org/vigetlabs/serialize_with_options.png?branch=master)](https://travis-ci.org/vigetlabs/serialize_with_options)
 
 This plugin is designed to make creating XML and JSON APIs for your Rails apps dead simple. We noticed a lot of repetition when creating API responses in our controllers. With this plugin, you can set the serialization options for a model with a simple DSL, rather than repeating them in every controller that includes it.
 

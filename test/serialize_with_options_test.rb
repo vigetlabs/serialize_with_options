@@ -78,7 +78,7 @@ class Review < ActiveRecord::Base
   end
 end
 
-class SerializeWithOptionsTest < Minitest::Test
+class SerializeWithOptionsTest < ActiveSupport::TestCase
   def self.should_serialize_with_options
     should "include active_record attributes" do
       assert_equal @user.name, @user_hash["name"]
@@ -197,9 +197,16 @@ class SerializeWithOptionsTest < Minitest::Test
     
     context 'passing options to the serializer' do
       setup do
+        if ActiveSupport::VERSION::MAJOR == 3 && ActiveSupport::VERSION::MINOR < 2
+          ActiveRecord::Base.include_root_in_json = true
+        end
         @user_hash = @user.as_json(:with_email, :root => 'custom_root')['custom_root']
       end
-      
+
+      teardown do
+        ActiveRecord::Base.include_root_in_json = false
+      end
+
       should "include active_record attributes" do
         assert_equal @user.name, @user_hash["name"]
       end

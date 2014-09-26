@@ -2,8 +2,31 @@ $:.unshift(File.dirname(__FILE__) + '/..')
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'rubygems'
+require 'bundler'
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
+
+require 'active_support/version'
+if ActiveSupport::VERSION::MAJOR >= 4
+  require 'minitest/autorun'
+else
+  require 'test/unit'
+end
+
+require 'sqlite3'
 require 'active_record'
-require 'minitest/autorun'
+
+if ActiveSupport::VERSION::MAJOR == 3
+  ActiveSupport.on_load(:active_record) do
+    self.include_root_in_json = false
+  end
+end
+
 require 'shoulda'
 require 'json'
 require 'serialize_with_options'
