@@ -82,3 +82,11 @@ Copyright (c) 2009-2014 David Eisinger & Zachary Porter ([Viget Labs][vgt]), rel
 
 [ser]: http://api.rubyonrails.org/classes/ActiveRecord/Serialization.html
 [vgt]: http://www.viget.com/
+
+***
+
+<a href="http://code.viget.com">
+  <img src="http://code.viget.com/github-banner.png" alt="Code At Viget">
+</a>
+
+Visit [code.viget.com](http://code.viget.com) to see more projects from [Viget.](https://viget.com)
