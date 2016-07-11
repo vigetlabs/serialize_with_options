@@ -27,9 +27,16 @@ if ActiveSupport::VERSION::MAJOR == 3
   end
 end
 
+if ActiveRecord::VERSION::MAJOR >= 5
+  require 'activemodel-serializers-xml'
+end
+
+
 require 'shoulda'
 require 'json'
+require 'pry'
 require 'serialize_with_options'
+
 ActiveRecord::Base.extend SerializeWithOptions
 
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')

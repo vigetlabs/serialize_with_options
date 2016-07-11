@@ -1,6 +1,12 @@
 require 'test_helper'
 
-class User < ActiveRecord::Base
+class ApplicationRecord < ActiveRecord::Base
+  include ActiveModel::Serializers::Xml if ActiveRecord::VERSION::MAJOR >= 5
+
+  self.abstract_class = true
+end
+
+class User < ApplicationRecord
   has_many :posts
   has_many :blog_posts
   has_many :check_ins
@@ -36,7 +42,7 @@ class User < ActiveRecord::Base
   end
 end
 
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   belongs_to :user
   has_many :comments
   has_many :reviews, :as => :reviewable
@@ -57,11 +63,11 @@ class BlogPost < Post
   end
 end
 
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   belongs_to :post
 end
 
-class CheckIn < ActiveRecord::Base
+class CheckIn < ApplicationRecord
   belongs_to :user
 
   serialize_with_options do
@@ -70,7 +76,7 @@ class CheckIn < ActiveRecord::Base
   end
 end
 
-class Review < ActiveRecord::Base
+class Review < ApplicationRecord
   belongs_to :reviewable, :polymorphic => true
 
   serialize_with_options do

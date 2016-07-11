@@ -2,7 +2,7 @@
 
 source "http://rubygems.org"
 
-gem "rails", "~> 3.2.19"
-gem "test-unit"
+gem "rails", "~> 5.0.0"
+gem "activemodel-serializers-xml"
 
 gemspec :path => "../"

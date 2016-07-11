@@ -37,14 +37,20 @@ GEM
       thor (>= 0.14.0)
     arel (4.0.2)
     builder (3.1.4)
+    coderay (1.1.1)
     erubis (2.7.0)
     hike (1.2.3)
     i18n (0.6.11)
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
+    method_source (0.8.2)
     mime-types (2.3)
     minitest (4.7.5)
     multi_json (1.10.1)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -68,6 +74,7 @@ GEM
     shoulda-context (1.2.1)
     shoulda-matchers (2.7.0)
       activesupport (>= 3.0.0)
+    slop (3.6.0)
     sprockets (2.12.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -88,7 +95,11 @@ PLATFORMS
 
 DEPENDENCIES
   appraisal
+  pry
   rails (~> 4.0.10)
   serialize_with_options!
   shoulda
   sqlite3
+
+BUNDLED WITH
+   1.12.5
